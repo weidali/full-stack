@@ -1,8 +1,9 @@
 <?php
 
 // INIT
+const APP_ENV = 'dev';
 
-require('./cfg/general.inc.php');
+require('./cfg/' . strtolower(APP_ENV) . '.inc.php');
 require('./includes/core/functions.php');
 
 init_classes();
