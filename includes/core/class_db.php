@@ -29,7 +29,6 @@ class DB
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                     ]
                 );
-                dump("OK");
             } catch (PDOException $e) {
                 print 'Error!: ' . $e->getMessage() . '<br/>';
                 die();
