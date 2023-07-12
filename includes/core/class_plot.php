@@ -49,7 +49,8 @@ class Plot
             FROM plots 
             $where 
             ORDER BY number 
-            LIMIT $limit;
+            LIMIT $limit
+            OFFSET $offset;
             "
         ) or die(DB::error());
         while ($row = DB::fetch_row($q)) {
@@ -71,7 +72,7 @@ class Plot
         // paginator
         $q = DB::query("SELECT count(*) FROM plots " . $where . ";");
         $row = DB::fetch_row($q);
-        $count = ($row = DB::fetch_row($q)) ? $row['count'] : 0;
+        $count = $row['count'] ?? 0;
         $url = 'plots';
         if ($search) $url .= '?search=' . $search . '&';
         paginator($count, $offset, $limit, $url, $paginator);

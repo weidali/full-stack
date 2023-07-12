@@ -45,7 +45,8 @@ class User
             FROM users 
             $where 
             ORDER BY user_id 
-            ;
+            LIMIT $limit
+            OFFSET $offset;
             "
         ) or die(DB::error());
         while ($row = DB::fetch_row($q)) {
@@ -63,11 +64,11 @@ class User
         // paginator
         $q = DB::query("SELECT count(*) FROM users " . $where . ";");
         $row = DB::fetch_row($q);
-        $count = ($row = DB::fetch_row($q)) ? $row['count'] : 0;
-        $url = 'plots';
+        $count = $row['count'] ?? 0;
+        $url = 'users';
         if ($search) $url .= '?search=' . $search . '&';
         paginator($count, $offset, $limit, $url, $paginator);
-        // output
+
         return ['items' => $items, 'paginator' => $paginator];
     }
 
