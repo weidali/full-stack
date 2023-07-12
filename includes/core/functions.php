@@ -100,7 +100,7 @@ function paginator($total, $offset, $q, $path, &$out)
             $out .= '<a href="/' . $path . '?offset=' . ($i * $q) . '">' . $m / $q . '</a>';
         }
         // # of current page
-        $out .= '<a class="active">' . (($m / $q) + 1) . '</a>';
+        $out .= '<a href="" class="active">' . (($m / $q) + 1) . '</a>';
         // not more than 5 links to the right
         $min = $k + 2;
         if ($min > ceil($total / $q)) $min = ceil($total / $q);
