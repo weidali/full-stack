@@ -57,7 +57,6 @@ class HTML {
 	}
 	
 	// PRIVATE
-
     private static function is_compiled($file, $path) {
         if (!self::$force_compile && file_exists($path)) {
             if (!self::$compile_check) {
@@ -171,4 +170,3 @@ class HTML {
 	}
 
 }
-?>

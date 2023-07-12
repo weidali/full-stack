@@ -28,6 +28,49 @@ class User
         }
     }
 
+    public static function users_list($d = [])
+    {
+        // vars
+        $search = isset($d['search']) && trim($d['search']) ? $d['search'] : '';
+        $offset = isset($d['offset']) && is_numeric($d['offset']) ? $d['offset'] : 0;
+        $limit = 20;
+        $items = [];
+        // where
+        $where = [];
+        if ($search) $where[] = "number LIKE '%" . $search . "%'";
+        $where = $where ? "WHERE " . implode(" AND ", $where) : "";
+        // info
+        $q = DB::query(
+            "SELECT user_id, plot_id, first_name, last_name, phone, email, last_login, updated
+            FROM users 
+            $where 
+            ORDER BY user_id 
+            ;
+            "
+        ) or die(DB::error());
+        while ($row = DB::fetch_row($q)) {
+            $items[] = [
+                'id' => (int) $row['user_id'],
+                'plot_id' => $row['plot_id'],
+                'first_name' => $row['first_name'],
+                'last_name' => $row['last_name'],
+                'phone' => $row['phone'],
+                'email' => $row['email'],
+                'last_login' => date('Y/m/d', $row['last_login']),
+                'updated' => date('Y/m/d', $row['updated'])
+            ];
+        }
+        // paginator
+        $q = DB::query("SELECT count(*) FROM users " . $where . ";");
+        $row = DB::fetch_row($q);
+        $count = ($row = DB::fetch_row($q)) ? $row['count'] : 0;
+        $url = 'plots';
+        if ($search) $url .= '?search=' . $search . '&';
+        paginator($count, $offset, $limit, $url, $paginator);
+        // output
+        return ['items' => $items, 'paginator' => $paginator];
+    }
+
     public static function users_list_plots($number)
     {
         // vars

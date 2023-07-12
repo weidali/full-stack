@@ -1,20 +1,21 @@
 <?php
 
-class Route {
+class Route
+{
 
     // VARS
-
     public static $path = '';
     public static $q = [];
 
     // GENERAL
-
-    public static function init() {
+    public static function init()
+    {
         Route::info();
         Route::route_common();
     }
 
-    private static function info() {
+    private static function info()
+    {
         // vars
         $url = $_SERVER['REQUEST_URI'];
         // formatting
@@ -34,14 +35,16 @@ class Route {
     }
 
     // ROUTES
-
-    private static function route_common() {
+    private static function route_common()
+    {
         if (Session::$access != 1) controller_login();
         else if (Route::$path == 'logout') Session::logout();
         else if (Route::$path == 'plots') controller_plots();
+        else if (Route::$path == 'users') controller_users();
     }
 
-    public static function route_call($path, $act, $data) {
+    public static function route_call($path, $act, $data)
+    {
         // routes
         if ($path == 'auth') $result = controller_auth($act, $data);
         else if ($path == 'plot') $result = controller_plot($act, $data);
@@ -51,5 +54,4 @@ class Route {
         echo json_encode($result, true);
         exit();
     }
-
 }

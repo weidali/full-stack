@@ -2,9 +2,7 @@
 
 class Plot
 {
-
     // GENERAL
-
     public static function plot_info($plot_id)
     {
         $q = DB::query("SELECT plot_id, status, billing, number, size, price, base_fixed, electricity_t1, electricity_t2, updated
@@ -50,7 +48,7 @@ class Plot
             "SELECT plot_id, status, billing, number, size, price, base_fixed, electricity_t1, electricity_t2, updated
             FROM plots 
             $where 
-            ORDER BY number ASC 
+            ORDER BY number 
             LIMIT $limit;
             "
         ) or die(DB::error());
@@ -89,7 +87,6 @@ class Plot
     }
 
     // ACTIONS
-
     public static function plot_edit_window($d = [])
     {
         $plot_id = isset($d['plot_id']) && is_numeric($d['plot_id']) ? $d['plot_id'] : 0;
