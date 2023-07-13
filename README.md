@@ -13,9 +13,9 @@ php -S localhost:8080
 
 <hr>
 
-![40%](https://progress-bar.dev/40/?title=progress)
+![50%](https://progress-bar.dev/50/?title=progress)
 
-Completed tasks 4/10
+Completed tasks 5/10
 ```txt
 + таблица Users с владельцами участков (колонки Plot ID, First name, Last Name, Phone, Email, Last login)
 + пагинация по 20 записей на страницу (аналогично таблице Plots)
@@ -26,5 +26,5 @@ Completed tasks 4/10
 - если при редактировании какие-либо поля, кроме Plots не заполнены, не давать сохранить данные
 - при сохранении данных телефон фильтруется по нечисловым символам, email переводится в lower case
 + в меню при выборе раздела Users он должен подсвечиваться аналогично выбору Plots
-- возможность удаления пользователя
++ возможность удаления пользователя
 ```
