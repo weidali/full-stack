@@ -78,12 +78,16 @@ class Session
         return $attempts;
     }
 
-    public static function logout()
+    public static function logout(int $user_id = null)
     {
-        DB::query("DELETE FROM sessions WHERE token='" . Session::$token . "';") or die(DB::error());
-        Session::unset_cookie_token();
-        header('Location: /');
-        exit();
+        if (!isset($user_id)) {
+            DB::query("DELETE FROM sessions WHERE token='" . Session::$token . "';") or die(DB::error());
+            Session::unset_cookie_token();
+            header('Location: /');
+            exit();
+        } else {
+            DB::query("DELETE FROM sessions WHERE user_id=$user_id;") or die(DB::error());
+        }
     }
 
     // ADMIN

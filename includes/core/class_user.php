@@ -79,10 +79,6 @@ class User
         // info
         $q = DB::query("SELECT user_id, plot_id, first_name, email, phone
         FROM users WHERE plot_id::smallint = $number;");
-        // $q = DB::query("SELECT user_id, plot_id, first_name, email, phone
-        //     FROM users 
-        //     WHERE plot_id LIKE '%$number%' 
-        //     ORDER BY user_id;") or die(DB::error());
         while ($row = DB::fetch_row($q)) {
             $plot_ids = explode(',', $row['plot_id']);
             $val = false;
@@ -94,7 +90,34 @@ class User
                 'phone_str' => phone_formatting($row['phone'])
             ];
         }
-        // output
+
         return $items;
+    }
+
+    public static function users_fetch($d = [])
+    {
+        $info = User::users_list($d);
+        HTML::assign('users', $info['items']);
+        return ['html' => HTML::fetch('./partials/users/users_table.html'), 'paginator' => $info['paginator']];
+    }
+
+
+    public static function user_destroy_window($d = [])
+    {
+        $user_id = isset($d['user_id']) && is_numeric($d['user_id']) ? $d['user_id'] : 0;
+        HTML::assign('user', ['id' => $user_id, 'user_id' => $user_id, 'foo' => 'bar']);
+
+        return ['html' => HTML::fetch('./partials/users/user_destroy.html')];
+    }
+
+    public static function user_destroy($d = [])
+    {
+        $offset = isset($d['offset']) ? preg_replace('~\D+~', '', $d['offset']) : 0;
+        $user_id = isset($d['user_id']) && is_numeric($d['user_id']) ? $d['user_id'] : 0;
+
+        DB::query("DELETE FROM users WHERE user_id=$user_id;") or die(DB::error());
+        Session::logout($user_id);
+
+        return User::users_fetch(['offset' => $offset]);
     }
 }

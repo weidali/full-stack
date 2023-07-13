@@ -1,0 +1,20 @@
+<div class="modal_head">
+    <i class="icon_close" onclick="common.modal_hide()"></i>
+</div>
+<div class="modal_body">
+    <div class="input_group_modal">
+        <div align="center">Are you sure?</div>
+    </div>
+    <div class="input_group_modal">
+        <div>To confirm user delete, click the "delete" button</div>
+        <div>Or press "cancel"</div>
+    </div>
+    <div class="modal_controls">
+        <div>
+            <div class="btn_modal" onclick="common.user_destroy({$user.id});">Delete</div>
+        </div>
+        <div>
+            <div class="btn_modal light" onclick="common.modal_hide();">Cancel</div>
+        </div>
+    </div>
+</div>

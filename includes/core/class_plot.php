@@ -92,6 +92,7 @@ class Plot
     {
         $plot_id = isset($d['plot_id']) && is_numeric($d['plot_id']) ? $d['plot_id'] : 0;
         HTML::assign('plot', Plot::plot_info($plot_id));
+
         return ['html' => HTML::fetch('./partials/plot_edit.html')];
     }
 
@@ -106,7 +107,7 @@ class Plot
         $price = isset($d['price']) ? preg_replace('~\D+~', '', $d['price']) : 0;
         $offset = isset($d['offset']) ? preg_replace('~\D+~', '', $d['offset']) : 0;
         // update
-        if ($plot_id) {
+        if ($plot_id != 0) {
             $set = [];
             $set[] = "status='" . $status . "'";
             $set[] = "billing='" . $billing . "'";
@@ -115,7 +116,9 @@ class Plot
             $set[] = "price='" . $price . "'";
             $set[] = "updated='" . Session::$ts . "'";
             $set = implode(", ", $set);
-            DB::query("UPDATE plots SET " . $set . " WHERE plot_id='" . $plot_id . "' LIMIT 1;") or die(DB::error());
+            DB::query("UPDATE plots 
+                SET $set
+                WHERE plot_id='$plot_id';") or die(DB::error());
         } else {
             DB::query("INSERT INTO plots (
                 status,

@@ -1,12 +1,10 @@
 let common = {
 
     // vars
-
     modal_progress: false,
     modal_open: false,
 
     // common
-
     init: () => {
         add_event(document, 'mousedown touchstart', common.auto_hide_modal);
         add_event(document, 'click', () => common.menu_popup_hide_all('inactive', event));
@@ -30,7 +28,6 @@ let common = {
     },
 
     // modal
-
     modal_show: (width, content) => {
         // progress
         if (common.modal_progress) return false;
@@ -80,7 +77,6 @@ let common = {
     },
 
     // auth
-
     auth_send: () => {
         // vars
         let data = {phone: gv('phone')};
@@ -112,7 +108,6 @@ let common = {
     },
 
     // search
-
     search_do: (act) => {
         // vars
         let data = { search: gv('search') };
@@ -125,7 +120,6 @@ let common = {
     },
 
     // plots
-
     plot_edit_window: (plot_id, e) => {
         // actions
         cancel_event(e);
@@ -152,6 +146,26 @@ let common = {
         };
         let location = {dpt: 'plot', act: 'edit_update'};
         // call
+        request({location: location, data: data}, (result) => {
+            common.modal_hide();
+            html('table', result.html);
+        });
+    },
+
+    user_destroy_window: (user_id, e) => {
+        cancel_event(e);
+        common.menu_popup_hide_all('all');
+        let data = {user_id: user_id};
+        let location = {dpt: 'user', act: 'destroy_window'};
+        request({location: location, data: data}, (result) => {
+            common.modal_show(400, result.html);
+        });
+    },
+
+    user_destroy: (user_id = 0) => {
+        let data = {user_id: user_id};
+        let location = {dpt: 'user', act: 'user_destroy'};
+
         request({location: location, data: data}, (result) => {
             common.modal_hide();
             html('table', result.html);
