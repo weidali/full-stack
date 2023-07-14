@@ -3,7 +3,7 @@
 // INIT
 if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') echo '';
 
-const APP_ENV = 'dev'; // 'general'
+const APP_ENV = 'general'; // 'general'
 
 require('./cfg/' . strtolower(APP_ENV) . '.inc.php');
 require('./includes/core/functions.php');

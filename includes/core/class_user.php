@@ -37,7 +37,9 @@ class User
         $items = [];
         // where
         $where = [];
-        if ($search) $where[] = "number LIKE '%" . $search . "%'";
+        // var_dump($search);
+        // if ($search) $where[] = "phone LIKE '%$search%' OR email LIKE '%$search%' OR first_name LIKE '%$search%'";
+        if ($search) $where[] = "phone LIKE '%$search%'";
         $where = $where ? "WHERE " . implode(" AND ", $where) : "";
         // info
         $q = DB::query(
@@ -78,7 +80,7 @@ class User
         $items = [];
         // info
         $q = DB::query("SELECT user_id, plot_id, first_name, email, phone
-        FROM users WHERE plot_id::smallint = $number;");
+        FROM users WHERE plot_id = $number;");
         while ($row = DB::fetch_row($q)) {
             $plot_ids = explode(',', $row['plot_id']);
             $val = false;
@@ -97,6 +99,7 @@ class User
     public static function users_fetch($d = [])
     {
         $info = User::users_list($d);
+        // var_dump($info);
         HTML::assign('users', $info['items']);
         return ['html' => HTML::fetch('./partials/users/users_table.html'), 'paginator' => $info['paginator']];
     }

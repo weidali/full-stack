@@ -6,7 +6,7 @@ class Plot
     public static function plot_info($plot_id)
     {
         $q = DB::query("SELECT plot_id, status, billing, number, size, price, base_fixed, electricity_t1, electricity_t2, updated
-            FROM plots WHERE plot_id='$plot_id' LIMIT 1;") or die(DB::error());
+            FROM plots WHERE plot_id LIKE '%$plot_id%' LIMIT 1;") or die(DB::error());
         if ($row = DB::fetch_row($q)) {
             return [
                 'id' => (int) $row['plot_id'],
@@ -41,7 +41,7 @@ class Plot
         $items = [];
         // where
         $where = [];
-        if ($search != '') $where[] = "number::smallint = '$search'";
+        if ($search != '') $where[] = "number LIKE '%$search%'";
         $where = $where ? "WHERE " . implode(" AND ", $where) : "";
         // info
         $q = DB::query(
@@ -119,7 +119,7 @@ class Plot
             $set = implode(", ", $set);
             DB::query("UPDATE plots 
                 SET $set
-                WHERE plot_id='$plot_id';") or die(DB::error());
+                WHERE plot_id LIKE '%$plot_id%';") or die(DB::error());
         } else {
             DB::query("INSERT INTO plots (
                 status,

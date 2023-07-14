@@ -27,7 +27,7 @@ class Session
         Session::$token = isset($_COOKIE['token']) ? flt_input($_COOKIE['token']) : '';
         Session::$tz = isset($_COOKIE['timezone']) && is_numeric($_COOKIE['timezone']) && $_COOKIE['timezone'] >= -720 && $_COOKIE['timezone'] <= 720 ? round(flt_input($_COOKIE['timezone'])) : DEFAULT_TIMEZONE;
         // query
-        $q = DB::query("SELECT user_id, access, token, updated FROM sessions WHERE token='" . Session::$token . "' LIMIT 1;") or die(DB::error());
+        $q = DB::query("SELECT user_id, access, token, updated FROM sessions WHERE token = '" . Session::$token . "' LIMIT 1;") or die(DB::error());
         $row = DB::fetch_row($q);
         if (!$row) return Session::unset_cookie_token();
         // vars
@@ -47,7 +47,7 @@ class Session
         Session::set_cookie('token', Session::$token);
         // update
         DB::query("UPDATE users SET phone_attempts_code='0', last_login='" . Session::$ts . "'
-            WHERE user_id='" . Session::$user_id . "';") or die(DB::error());
+            WHERE user_id = '" . Session::$user_id . "';") or die(DB::error());
         DB::query("INSERT INTO sessions (
             user_id,
             access,
@@ -71,7 +71,7 @@ class Session
     {
         // clear
         if ((Session::$ts - $last_login) > 3600) {
-            DB::query("UPDATE users SET phone_attempts_code='0' WHERE user_id='" . $user_id . "';") or die(DB::error());
+            DB::query("UPDATE users SET phone_attempts_code='0' WHERE user_id LIKE '%$user_id%';") or die(DB::error());
             return 0;
         }
         // default

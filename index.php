@@ -1,7 +1,7 @@
 <?php
 
 // INIT
-const APP_ENV = 'dev'; // 'general'
+const APP_ENV = 'general'; // 'general'
 
 require('./cfg/' . strtolower(APP_ENV) . '.inc.php');
 require('./includes/core/functions.php');

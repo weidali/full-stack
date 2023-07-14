@@ -6,7 +6,12 @@
         <div id="paginator">{$paginator}</div>
         <div class="input_group">
             <i class="icon_search"></i>
-            <input id="search" type="number" value="{$search}" placeholder="Search by Number" oninput="common.search_do('plots');">
+            <input id="search" 
+                type="number" 
+                value="{$search}" 
+                placeholder="Search by Number" 
+                onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 49 && event.charCode <= 57))" 
+                oninput="common.search_do('plots');">
         </div>
     </div>
 </div>
