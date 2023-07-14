@@ -13,13 +13,13 @@ php -S localhost:8080
 
 <hr>
 
-![50%](https://progress-bar.dev/50/?title=progress)
+![60%](https://progress-bar.dev/60/?title=progress)
 
-Completed tasks 5/10
+Completed tasks 6/10
 ```txt
 + таблица Users с владельцами участков (колонки Plot ID, First name, Last Name, Phone, Email, Last login)
 + пагинация по 20 записей на страницу (аналогично таблице Plots)
-- поиск по номеру телефона, имени и email пользователя
++ поиск по номеру телефона, имени и email пользователя
 + страница реализуется в схожем дизайне, как страница с Plots
 - возможность создания/редактирования пользователя (поля First name, Last name, Phone, Email, Plots)
 - должна поддерживаться возможность добавить пользователя сразу к нескольким участкам (через запятую в поле Plots)
