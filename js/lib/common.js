@@ -131,7 +131,7 @@ function on_click(el) {
 }
 
 let debounce = (function () {
-    var timeoutHandles = {};    
+    let timeoutHandles = {};    
     return function (id, callback, ms) {        
         if (timeoutHandles[id]) {
             clearTimeout(timeoutHandles[id]);
