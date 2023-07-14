@@ -64,7 +64,7 @@ class User
         // paginator
         $q = DB::query("SELECT count(*) FROM users " . $where . ";");
         $row = DB::fetch_row($q);
-        $count = $row['count'] ?? 0;
+        $count = $row['count(*)'] ?? 0;
         $url = 'users';
         if ($search) $url .= '?search=' . $search . '&';
         paginator($count, $offset, $limit, $url, $paginator);
