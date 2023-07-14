@@ -107,6 +107,18 @@ let common = {
         });
     },
 
+    search_debounce: (act, e) => {
+        debounce('search', function () {
+            let data = { search: gv('search') };
+            let location = { dpt: 'search', act: act };
+            request({location: location, data: data}, (result) => {
+                html('table', result.html);
+                html('paginator', result.paginator);
+            });
+         }, 300);
+
+    },
+
     // search
     search_do: (act) => {
         // vars

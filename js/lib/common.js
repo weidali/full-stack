@@ -130,6 +130,17 @@ function on_click(el) {
     } else return false;
 }
 
+let debounce = (function () {
+    var timeoutHandles = {};    
+    return function (id, callback, ms) {        
+        if (timeoutHandles[id]) {
+            clearTimeout(timeoutHandles[id]);
+        }
+
+        timeoutHandles[id] = setTimeout(callback, ms);             
+    };
+})();
+
 // POLYFILLS
 if (!Element.prototype.closest) {
     Element.prototype.closest = function(css) {

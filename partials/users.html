@@ -10,8 +10,10 @@
                 id="search" 
                 type="text" 
                 value="{$search}" 
-                placeholder="Search" 
-                oninput="common.search_do('users');">
+                placeholder="Search"
+                oninput="common.search_debounce('users');">
+                <!-- onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 49 && event.charCode <= 57))"  -->
+                
         </div>
     </div>
 </div>
