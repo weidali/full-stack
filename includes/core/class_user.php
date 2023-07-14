@@ -105,10 +105,50 @@ class User
     {
         $info = User::users_list($d);
         HTML::assign('users', $info['items']);
+        $g['users_count'] = User::users_count();
+        HTML::assign('global', $g);
 
         return ['html' => HTML::fetch('./partials/users/users_table.html'), 'paginator' => $info['paginator']];
     }
 
+    public static function create_window()
+    {
+        $info = Plot::all_plots_selected_fields(['fields' => ['some_bug_field', 'plot_id', 'price', 'number']]);
+        HTML::assign('plots', $info['items']);
+
+        return ['html' => HTML::fetch('./partials/users/user_create.html')];
+    }
+
+    public static function store($d = [])
+    {
+        $d = xssafe($d);
+        $user_id = isset($d['user_id']) && is_numeric($d['user_id']) ? $d['user_id'] : 0;
+        $first_name = isset($d['first_name']) ? $d['first_name'] : null;
+        $last_name = isset($d['last_name']) ? $d['last_name'] : null;
+        $phone = isset($d['phone']) ? phone_formatting($d['phone']) : '';
+        $email = isset($d['email']) ? email_formatting($d['email']) : '';
+        $offset = isset($d['offset']) ? preg_replace('~\D+~', '', $d['offset']) : 0;
+
+        if ($user_id != 0) {
+            $set = [];
+            $set[] = "first_name='$first_name'";
+            $set[] = "last_name='$last_name'";
+            $set[] = "phone='$phone'";
+            $set[] = "email='$email'";
+            $set = implode(", ", $set);
+            DB::query("UPDATE plots 
+                SET $set
+                WHERE plot_id LIKE '%$user_id%';") or die(DB::error());
+        } else {
+            // $user_id = auto_increm('users');
+            // var_dump($user_id);
+            $sql = "INSERT INTO users (first_name, last_name, phone, email, updated)
+                VALUES ('$first_name', '$last_name', '$phone', '$email', '" . Session::$ts . "')";
+            DB::query($sql) or die(DB::error());
+        }
+
+        return User::users_fetch(['offset' => $offset]);
+    }
 
     public static function user_destroy_window($d = [])
     {

@@ -1,6 +1,6 @@
 <div class="sub_header">
     <div>
-        <div class="btn_sub" onclick="common.user_edit_window();">Add</div>
+        <div class="btn_sub" onclick="common.user_create_window();">Add</div>
     </div>
     <div>
         <div id="paginator">{$paginator}</div>
@@ -12,8 +12,6 @@
                 value="{$search}" 
                 placeholder="Search"
                 oninput="common.search_debounce('users');">
-                <!-- onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 49 && event.charCode <= 57))"  -->
-                
         </div>
     </div>
 </div>

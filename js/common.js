@@ -163,6 +163,35 @@ let common = {
         });
     },
 
+    user_create_window: (e) => {
+        cancel_event(e);
+        let data = {
+            
+        };
+
+        let location = {dpt: 'user', act: 'create_window'};
+        request({location: location, data: data}, (result) => {
+            common.modal_show(400, result.html);
+        });
+    },
+
+    user_store: () => {
+        // vars
+        let data = {
+            plot_id: gv('plot_id'),
+            first_name: gv('first_name'),
+            last_name: gv('last_name'),
+            phone: gv('phone'),
+            email: gv('email'),
+        };
+        
+        let location = {dpt: 'user', act: 'store'};
+        request({location: location, data: data}, (result) => {
+            common.modal_hide();
+            html('table', result.html);
+        });
+    },
+
     user_destroy_window: (user_id, e) => {
         cancel_event(e);
         common.menu_popup_hide_all('all');

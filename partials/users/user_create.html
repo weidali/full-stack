@@ -1,0 +1,35 @@
+<div class="modal_head">
+    <i class="icon_close" onclick="common.modal_hide()"></i>
+</div>
+<form>
+<div class="modal_body">
+    <div class="input_group_modal">
+        <div>First Name</div>
+        <input type="text" id="first_name" value="" placeholder="Enter Your Name">
+    </div>
+    <div class="input_group_modal">
+        <div>Last Name</div>
+        <input type="text" id="last_name" value="" placeholder="Enter Your Surname">
+    </div>
+    <div class="input_group_modal">
+        <div>Phone</div>
+        <input type="number" id="phone" value="" placeholder="Enter Your Phone Number">
+    </div>
+    <div class="input_group_modal">
+        <div>Email</div>
+        <input type="email" id="email" value="" placeholder="Enter Your Email">
+    </div>
+    <div class="input_group_modal">
+        <div>Plot IDs</div>
+        <input type="text" id="plot_id" value="" placeholder="Enter plots id separated by commas">
+    </div>
+    <div class="modal_controls">
+        <div>
+            <div class="btn_modal" onclick="common.user_store();">Save</div>
+        </div>
+        <div>
+            <div class="btn_modal light" onclick="common.modal_hide();">Cancel</div>
+        </div>
+    </div>
+</div>
+</form>

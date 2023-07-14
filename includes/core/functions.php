@@ -72,10 +72,76 @@ function dump($data = [])
     error_log($data);
 }
 
+function xssafe(array $data): array
+{
+    $result = [];
+    foreach ($data as $key => $value) {
+        $result[$key] = strip_tags($value);
+    }
+    return $result;
+}
+
 function phone_formatting($phone)
 {
     if (preg_match('~^[78]\d{10}$~', $phone)) $phone = preg_replace('~^([78])(\d{3})(\d{3})(\d{2})(\d{2})$~', '+$1 ($2) $3-$4-$5', $phone);
     return $phone;
+}
+
+function email_formatting($email)
+{
+    return strtolower($email);
+}
+
+function auto_increm(string $model): int
+{
+
+    $model_id = singularize($model) . '_id';
+    $sql = "SELECT $model_id from $model order by $model_id DESC LIMIT 1";
+    $q = DB::query($sql) or die(DB::error());
+
+    $row = DB::fetch_assoc($q);
+    $value = $row[$model_id];
+    $value = (int) $value + 1;
+
+    return $value;
+}
+
+function singularize(string $word): string
+{
+    $singular = [
+        '/(quiz)zes$/i' => '\\1',
+        '/(matr)ices$/i' => '\\1ix',
+        '/(vert|ind)ices$/i' => '\\1ex',
+        '/^(ox)en/i' => '\\1',
+        '/(alias|status)es$/i' => '\\1',
+        '/([octop|vir])i$/i' => '\\1us',
+        '/(cris|ax|test)es$/i' => '\\1is',
+        '/(shoe)s$/i' => '\\1',
+        '/(o)es$/i' => '\\1',
+        '/(bus)es$/i' => '\\1',
+        '/([m|l])ice$/i' => '\\1ouse',
+        '/(x|ch|ss|sh)es$/i' => '\\1',
+        '/(m)ovies$/i' => '\\1ovie',
+        '/(s)eries$/i' => '\\1eries',
+        '/([^aeiouy]|qu)ies$/i' => '\\1y',
+        '/([lr])ves$/i' => '\\1f',
+        '/(tive)s$/i' => '\\1',
+        '/(hive)s$/i' => '\\1',
+        '/([^f])ves$/i' => '\\1fe',
+        '/(^analy)ses$/i' => '\\1sis',
+        '/((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i' => '\\1\\2sis',
+        '/([ti])a$/i' => '\\1um',
+        '/(n)ews$/i' => '\\1ews',
+        '/s$/i' => '',
+    ];
+
+    foreach ($singular as $rule => $replacement) {
+        if (preg_match($rule, $word)) {
+            return preg_replace($rule, $replacement, $word);
+        }
+    }
+
+    return $word;
 }
 
 function paginator($total, $offset, $q, $path, &$out)

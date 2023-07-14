@@ -47,6 +47,11 @@ class DB
         return $q->fetch();
     }
 
+    public static function fetch_assoc($q)
+    {
+        return $q->fetch(PDO::FETCH_ASSOC);
+    }
+
     public static function error()
     {
         $res = DB::connect()->errorInfo();

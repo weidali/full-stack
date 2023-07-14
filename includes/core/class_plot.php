@@ -2,6 +2,18 @@
 
 class Plot
 {
+    const PLOT_FIELDS = [
+        'plot_id',
+        'status',
+        'billing',
+        'number',
+        'size',
+        'price',
+        'base_fixed',
+        'electricity_t1',
+        'electricity_t2',
+        'updated',
+    ];
     // GENERAL
     public static function plot_info($plot_id)
     {
@@ -78,6 +90,40 @@ class Plot
         paginator($count, $offset, $limit, $url, $paginator);
         // output
         return ['items' => $items, 'paginator' => $paginator];
+    }
+
+    public static function all_plots_selected_fields($d = []): array
+    {
+        $fields = isset($d['fields']) ? $d['fields'] : [];
+        if (count($fields) > 0) {
+            $fields = array_filter($fields, function ($v) {
+                return in_array($v, self::PLOT_FIELDS) ?? $v;
+            }, ARRAY_FILTER_USE_BOTH);
+        } else {
+            $fields = self::PLOT_FIELDS;
+        }
+        $select = "SELECT " . implode(" , ", $fields);
+
+        $q = DB::query("$select FROM plots ORDER BY plot_id;")
+            or die(DB::error());
+
+        while ($row = DB::fetch_row($q)) {
+            $items[] = [
+                'id' => isset($row['plot_id']) ? (int) $row['plot_id'] : null,
+                'status' => isset($row['status']) ? $row['status'] : null,
+                'billing' => isset($row['billing']) ? $row['billing'] : null,
+                'number' => isset($row['number']) ? $row['number'] : null,
+                'size' => isset($row['size']) ? $row['size'] : null,
+                'price' => isset($row['price']) ? number_format($row['price'], 0, '', ' ') : null,
+                'base_fixed' => isset($row['base_fixed']) ? (bool) $row['base_fixed'] : null,
+                'electricity_t1' => isset($row['electricity_t1']) ? (float) $row['electricity_t1'] : null,
+                'electricity_t2' => isset($row['electricity_t2']) ? (float) $row['electricity_t2'] : null,
+                'updated' => isset($row['updated']) ? date('Y/m/d', $row['updated']) : null,
+            ];
+            print("\n");
+        }
+
+        return ['items' => $items];
     }
 
     public static function plots_count(): int
