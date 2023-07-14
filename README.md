@@ -13,7 +13,7 @@ php -S localhost:8080
 
 <hr>
 
-![60%](https://progress-bar.dev/60/?title=progress)
+![65%](https://progress-bar.dev/65/?title=progress)
 
 Completed tasks 6/10
 ```txt
