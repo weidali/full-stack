@@ -112,7 +112,6 @@ let common = {
         // vars
         let data = { search: gv('search') };
         let location = { dpt: 'search', act: act };
-        // call
         request({location: location, data: data}, (result) => {
             html('table', result.html);
             html('paginator', result.paginator);

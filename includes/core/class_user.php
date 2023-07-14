@@ -37,9 +37,7 @@ class User
         $items = [];
         // where
         $where = [];
-        // var_dump($search);
-        // if ($search) $where[] = "phone LIKE '%$search%' OR email LIKE '%$search%' OR first_name LIKE '%$search%'";
-        if ($search) $where[] = "phone LIKE '%$search%'";
+        if ($search != '') $where[] = "phone LIKE '%$search%' OR email LIKE '%$search%' OR first_name LIKE '%$search%'";
         $where = $where ? "WHERE " . implode(" AND ", $where) : "";
         // info
         $q = DB::query(
@@ -99,8 +97,8 @@ class User
     public static function users_fetch($d = [])
     {
         $info = User::users_list($d);
-        // var_dump($info);
         HTML::assign('users', $info['items']);
+
         return ['html' => HTML::fetch('./partials/users/users_table.html'), 'paginator' => $info['paginator']];
     }
 
