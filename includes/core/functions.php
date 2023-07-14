@@ -86,6 +86,7 @@ function paginator($total, $offset, $q, $path, &$out)
         $k = $offset / $q;
         // not more than 4 links to the left
         $min = $k - 1;
+        // $out .= '<p>Total: ' . $total . '</p>';
         if ($min < 0) $min = 0;
         else {
             if ($min >= 1) {

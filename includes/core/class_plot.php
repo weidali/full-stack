@@ -80,6 +80,13 @@ class Plot
         return ['items' => $items, 'paginator' => $paginator];
     }
 
+    public static function plots_count(): int
+    {
+        $q = DB::query("SELECT count(*) FROM plots;");
+        $row = DB::fetch_row($q);
+        return $row['count(*)'] ?? 0;
+    }
+
     public static function plots_fetch($d = [])
     {
         $info = Plot::plots_list($d);

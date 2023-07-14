@@ -72,6 +72,13 @@ class User
         return ['items' => $items, 'paginator' => $paginator];
     }
 
+    public static function users_count(): int
+    {
+        $q = DB::query("SELECT count(*) FROM users;");
+        $row = DB::fetch_row($q);
+        return $row['count(*)'] ?? 0;
+    }
+
     public static function users_list_plots($number)
     {
         // vars
