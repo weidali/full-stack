@@ -30,7 +30,6 @@ function cancel_event(event) {
 }
 
 // DOM
-
 function ge(id) {
     return 'string' == typeof id || 'number' == typeof id ? document.getElementById(id) : id
 }
@@ -52,7 +51,6 @@ function qs_all(el, node) {
 }
 
 // SIZES
-
 function w_width() {
     return Math.max(
         window.innerWidth || 0,
@@ -62,7 +60,6 @@ function w_width() {
 }
 
 // CSS
-
 function has_class(el, name) {
     el = ge(el);
     return el && 1 === el.nodeType && (' ' + el.className + ' ').replace(/[\t\r\n\f]/g, ' ').indexOf(' ' + name + ' ') >= 0;
@@ -89,7 +86,6 @@ function set_style(el, name, value) {
 }
 
 // REQUESTS
-
 function request(data, callback) {
     let xhr = new XMLHttpRequest();
     if (!xhr) return;
@@ -119,7 +115,6 @@ function request_serialize(data, prefix) {
 }
 
 // SERVICE
-
 function trim(text) {
     return (text || '').replace(/^\s+|\s+$/g, '');
 }
@@ -136,7 +131,6 @@ function on_click(el) {
 }
 
 // POLYFILLS
-
 if (!Element.prototype.closest) {
     Element.prototype.closest = function(css) {
         let node = this;

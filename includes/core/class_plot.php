@@ -6,7 +6,7 @@ class Plot
     public static function plot_info($plot_id)
     {
         $q = DB::query("SELECT plot_id, status, billing, number, size, price, base_fixed, electricity_t1, electricity_t2, updated
-            FROM plots WHERE plot_id='" . $plot_id . "' LIMIT 1;") or die(DB::error());
+            FROM plots WHERE plot_id='$plot_id' LIMIT 1;") or die(DB::error());
         if ($row = DB::fetch_row($q)) {
             return [
                 'id' => (int) $row['plot_id'],
@@ -35,13 +35,13 @@ class Plot
     public static function plots_list($d = [])
     {
         // vars
-        $search = isset($d['search']) && trim($d['search']) ? $d['search'] : '';
+        $search = isset($d['search']) && trim($d['search']) && is_numeric($d['search']) ? $d['search'] : '';
         $offset = isset($d['offset']) && is_numeric($d['offset']) ? $d['offset'] : 0;
         $limit = 20;
         $items = [];
         // where
         $where = [];
-        if ($search) $where[] = "number LIKE '%" . $search . "%'";
+        if ($search != '') $where[] = "number::smallint = '$search'";
         $where = $where ? "WHERE " . implode(" AND ", $where) : "";
         // info
         $q = DB::query(
@@ -84,6 +84,7 @@ class Plot
     {
         $info = Plot::plots_list($d);
         HTML::assign('plots', $info['items']);
+
         return ['html' => HTML::fetch('./partials/plots_table.html'), 'paginator' => $info['paginator']];
     }
 
