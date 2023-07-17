@@ -11,6 +11,9 @@ Set the DB connection credantionals into config file
 php -S localhost:8080
 ```
 
+## Screenshots
+![Preview 1](https://github.com/weidali/full-stack/assets/16261185/99294b90-dfa2-4692-8ad2-95e0865af5fe "Example of users page"){: width=250}
+
 <hr>
 
 ![65%](https://progress-bar.dev/65/?title=progress)
