@@ -12,7 +12,7 @@ php -S localhost:8080
 ```
 
 ## Screenshots
-![Preview 1](https://github.com/weidali/full-stack/assets/16261185/99294b90-dfa2-4692-8ad2-95e0865af5fe "Example of users page"){: width=250}
+![Preview 1](https://github.com/weidali/full-stack/assets/16261185/99294b90-dfa2-4692-8ad2-95e0865af5fe "Example of users page")
 
 <hr>
 
