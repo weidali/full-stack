@@ -175,9 +175,9 @@ let common = {
         });
     },
 
-    user_store: () => {
-        // vars
+    user_store: (user_id = 0) => {
         let data = {
+            user_id: user_id,
             plot_id: gv('plot_id'),
             first_name: gv('first_name'),
             last_name: gv('last_name'),
@@ -190,6 +190,17 @@ let common = {
             common.modal_hide();
             html('table', result.html);
         });
+    },
+
+    user_edit_window: (user_id, e) => {
+        cancel_event(e);
+        common.menu_popup_hide_all('all');
+
+        let data = {user_id: user_id};
+        let location = {dpt: 'user', act: 'edit_window'};
+         request({location: location, data: data}, (result) => {
+             common.modal_show(400, result.html);
+         });
     },
 
     user_destroy_window: (user_id, e) => {

@@ -14,15 +14,25 @@ class User
         else if ($phone) $where = "phone='" . $phone . "'";
         else return [];
         // info
-        $q = DB::query("SELECT user_id, phone, access FROM users WHERE " . $where . " LIMIT 1;") or die(DB::error());
+        $q = DB::query("SELECT user_id, first_name, last_name, email, phone, plot_id, access FROM users WHERE " . $where . " LIMIT 1;") or die(DB::error());
         if ($row = DB::fetch_row($q)) {
             return [
                 'id' => (int) $row['user_id'],
+                'first_name' => $row['first_name'],
+                'last_name' => $row['last_name'],
+                'phone' => $row['phone'],
+                'email' => $row['email'],
+                'plot_id' => $row['plot_id'],
                 'access' => (int) $row['access']
             ];
         } else {
             return [
                 'id' => 0,
+                'first_name' => $row['first_name'],
+                'last_name' => $row['last_name'],
+                'phone' => $row['phone'],
+                'email' => $row['email'],
+                'plot_id' => $row['plot_id'],
                 'access' => 0
             ];
         }
@@ -128,6 +138,7 @@ class User
         $phone = isset($d['phone']) ? phone_formatting($d['phone']) : '';
         $email = isset($d['email']) ? email_formatting($d['email']) : '';
         $offset = isset($d['offset']) ? preg_replace('~\D+~', '', $d['offset']) : 0;
+        $plot_id = isset($d['plot_id']) && is_numeric($d['plot_id']) ? "plot_id='" . $d['plot_id'] . "'"  : '';
 
         if ($user_id != 0) {
             $set = [];
@@ -135,13 +146,13 @@ class User
             $set[] = "last_name='$last_name'";
             $set[] = "phone='$phone'";
             $set[] = "email='$email'";
+            $set[] = $plot_id;
             $set = implode(", ", $set);
-            DB::query("UPDATE plots 
+            DB::query("UPDATE users 
                 SET $set
-                WHERE plot_id LIKE '%$user_id%';") or die(DB::error());
+                WHERE user_id LIKE '%$user_id%';") or die(DB::error());
         } else {
             // $user_id = auto_increm('users');
-            // var_dump($user_id);
             $sql = "INSERT INTO users (first_name, last_name, phone, email, updated)
                 VALUES ('$first_name', '$last_name', '$phone', '$email', '" . Session::$ts . "')";
             DB::query($sql) or die(DB::error());
@@ -150,10 +161,18 @@ class User
         return User::users_fetch(['offset' => $offset]);
     }
 
+    public static function user_edit_window($d = [])
+    {
+        $user_id = isset($d['user_id']) && is_numeric($d['user_id']) ? $d['user_id'] : 0;
+        HTML::assign('user', User::user_info(['user_id' => $user_id]));
+
+        return ['html' => HTML::fetch('./partials/users/user_edit.html')];
+    }
+
     public static function user_destroy_window($d = [])
     {
         $user_id = isset($d['user_id']) && is_numeric($d['user_id']) ? $d['user_id'] : 0;
-        HTML::assign('user', ['id' => $user_id, 'user_id' => $user_id, 'foo' => 'bar']);
+        HTML::assign('user', ['id' => $user_id]);
 
         return ['html' => HTML::fetch('./partials/users/user_destroy.html')];
     }
