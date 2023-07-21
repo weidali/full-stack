@@ -15,7 +15,7 @@
         <td>
             {if $users[i].plots}
             {section name=j loop=$users[i].plots}
-            <div>{$users[i].plots[j].id}, <span class="gray">{$users[i].plots[j].price}</span></div>
+            <div>{$users[i].plots[j].id} - <span class="gray">{$users[i].plots[j].price} AED</span></div>
             {/section}
             {else}
             -
