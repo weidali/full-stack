@@ -28,12 +28,12 @@ class User
         } else {
             return [
                 'id' => 0,
-                'first_name' => $row['first_name'],
-                'last_name' => $row['last_name'],
-                'phone' => $row['phone'],
-                'email' => $row['email'],
-                'plot_id' => $row['plot_id'],
-                'access' => 0
+                'first_name' => '',
+                'last_name' => '',
+                'email' => '',
+                'phone' => 0,
+                'plot_id' => 0,
+                'access' => 0,
             ];
         }
     }

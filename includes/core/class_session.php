@@ -98,7 +98,7 @@ class Session
         // validate
         if (!$phone) return error_response(1003, 'One of the parameters was missing or was passed in the wrong format.', ['phone' => 'empty field']);
         $user = User::user_info(['phone' => $phone]);
-        if ($user['access'] != 1) return error_response(1004, 'User with this phone is not found.', ['phone' => 'incorrect phone']);
+        if ($user['id'] == 0 || $user['access'] != 1) return error_response(1004, 'User with this phone is not found.', ['phone' => 'incorrect phone']);
         // query
         $where = "user_id='" . $user['id'] . "'";
         DB::query("UPDATE users SET phone_attempts_sms=phone_attempts_sms+1, phone_attempts_code='0' WHERE $where;") or die(DB::error());
