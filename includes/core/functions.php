@@ -106,6 +106,17 @@ function auto_increm(string $model): int
     return $value;
 }
 
+function plots_ids_validation(string $ids): bool
+{
+    $value = '[0-9]+';
+    $match = "~^$value(,$value)*$~i";
+    if (preg_match($match, $ids)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function singularize(string $word): string
 {
     $singular = [

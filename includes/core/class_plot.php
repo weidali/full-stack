@@ -133,6 +133,29 @@ class Plot
         return $row['count(*)'] ?? 0;
     }
 
+    public static function plots_list_users($plosts_isd)
+    {
+        $items = [];
+
+        if (is_numeric($plosts_isd)) {
+            $query = "SELECT plot_id, price FROM `plots` WHERE `plot_id` LIKE '%$plosts_isd%' LIMIT 1;";
+        } elseif (is_string($plosts_isd)) {
+            $query = "SELECT plot_id, price FROM `plots` WHERE `plot_id` IN ($plosts_isd)";
+        } elseif ($plosts_isd == 0) {
+            return $items;
+        }
+
+        $q = DB::query($query);
+        while ($row = DB::fetch_row($q)) {
+            $items[] = [
+                'id' => (int) $row['plot_id'],
+                'price' => (int) $row['price'],
+            ];
+        }
+
+        return $items;
+    }
+
     public static function plots_fetch($d = [])
     {
         $info = Plot::plots_list($d);

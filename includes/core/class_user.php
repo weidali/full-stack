@@ -67,6 +67,7 @@ class User
                 'last_name' => $row['last_name'],
                 'phone' => $row['phone'],
                 'email' => $row['email'],
+                'plots' => $row['plot_id'] ? Plot::plots_list_users($row['plot_id']) : [],
                 'last_login' => date('Y/m/d', $row['last_login']),
                 'updated' => date('Y/m/d', $row['updated'])
             ];
@@ -95,11 +96,12 @@ class User
         $items = [];
         // info
         $q = DB::query("SELECT user_id, plot_id, first_name, email, phone
-        FROM users WHERE plot_id = $number;");
+        FROM users WHERE plot_id LIKE '%$number%';");
         while ($row = DB::fetch_row($q)) {
             $plot_ids = explode(',', $row['plot_id']);
             $val = false;
-            foreach ($plot_ids as $plot_id) if ($plot_id == $number) $val = true;
+            foreach ($plot_ids as $plot_id)
+                if ($plot_id == $number) $val = true;
             if ($val) $items[] = [
                 'id' => (int) $row['user_id'],
                 'first_name' => $row['first_name'],
@@ -138,7 +140,11 @@ class User
         $phone = isset($d['phone']) ? phone_formatting($d['phone']) : '';
         $email = isset($d['email']) ? email_formatting($d['email']) : '';
         $offset = isset($d['offset']) ? preg_replace('~\D+~', '', $d['offset']) : 0;
-        $plot_id = isset($d['plot_id']) && is_numeric($d['plot_id']) ? "plot_id='" . $d['plot_id'] . "'"  : '';
+        $plot_id = isset($d['plot_id'])
+            && plots_ids_validation(str_replace(' ', '', $d['plot_id']))
+            ? "plot_id='" .  str_replace(' ', '', $d['plot_id']) . "'"
+            : 0;
+        $village_id = 1;
 
         if ($user_id != 0) {
             $set = [];
@@ -153,8 +159,8 @@ class User
                 WHERE user_id LIKE '%$user_id%';") or die(DB::error());
         } else {
             // $user_id = auto_increm('users');
-            $sql = "INSERT INTO users (first_name, last_name, phone, email, updated)
-                VALUES ('$first_name', '$last_name', '$phone', '$email', '" . Session::$ts . "')";
+            $sql = "INSERT INTO users (first_name, last_name, phone, email, plot_id, village_id, updated)
+                VALUES ('$first_name', '$last_name', '$phone', '$email', '$plot_id', '$village_id', '" . Session::$ts . "')";
             DB::query($sql) or die(DB::error());
         }
 
@@ -182,7 +188,7 @@ class User
         $offset = isset($d['offset']) ? preg_replace('~\D+~', '', $d['offset']) : 0;
         $user_id = isset($d['user_id']) && is_numeric($d['user_id']) ? $d['user_id'] : 0;
 
-        DB::query("DELETE FROM users WHERE user_id=$user_id;") or die(DB::error());
+        DB::query("DELETE FROM users WHERE user_id LIKE '%$user_id%';") or die(DB::error());
         Session::logout($user_id);
 
         return User::users_fetch(['offset' => $offset]);
