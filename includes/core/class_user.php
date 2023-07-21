@@ -146,6 +146,15 @@ class User
             : 0;
         $village_id = 1;
 
+        if (!$first_name)
+            return error_response(1003, 'empty field', ['first_name' => 'empty field']);
+        if (!$last_name)
+            return error_response(1003, 'empty field', ['last_name' => 'empty field']);
+        if (!$phone)
+            return error_response(1003, 'empty field', ['phone' => 'empty field']);
+        if (!$email)
+            return error_response(1003, 'empty field', ['email' => 'empty field']);
+
         if ($user_id != 0) {
             $set = [];
             $set[] = "first_name='$first_name'";

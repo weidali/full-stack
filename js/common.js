@@ -187,8 +187,17 @@ let common = {
         
         let location = {dpt: 'user', act: 'store'};
         request({location: location, data: data}, (result) => {
-            common.modal_hide();
-            html('table', result.html);
+            if (result.error_msg) {
+                let tmpl = Object.keys(result.error_data)[0] + '_note';
+                html(tmpl, result.error_msg);
+                remove_class(tmpl, 'fade');
+                setTimeout(function() { add_class(tmpl, 'fade'); }, 3000);
+                setTimeout(function() { html(tmpl, ''); }, 3500);
+            } else {
+                common.modal_hide();
+                html('table', result.html);
+            };
+            
         });
     },
 
